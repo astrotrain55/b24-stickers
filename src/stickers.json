@@ -6,6 +6,16 @@
       "size": 32
     }
   ],
+  "itstickers": [
+    {
+      "icon": "https://natelegram.ru/wp-content/uploads/2017/11/IItstickers-8.png",
+      "title": "У меня амнезия, кто вы и какой проект?"
+    },
+    {
+      "icon": "https://natelegram.ru/wp-content/uploads/2017/11/IItstickers-13.png",
+      "title": "Ну чё там, чё там? Готово? Готово?"
+    }
+  ],
   "terebonk_2": [
     {
       "icon": "https://s.tcdn.co/e65/38d/e6538d88-ed55-39d9-a67f-ad97feea9c01/192/8.png",
