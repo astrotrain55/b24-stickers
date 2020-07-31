@@ -1,23 +1,15 @@
 <template>
   <code>
-    <template v-for="sticker in enabledStickers">
-      <span :key="sticker.icon">
-        [icon={{sticker.icon}} size={{sticker.size}} title={{sticker.title}}]
-      </span>
-    </template>
+    <span v-for="sticker in enabledStickers" :key="sticker.icon">
+      [icon={{sticker.icon}} size={{sticker.size}} title={{sticker.title}}]
+    </span>
   </code>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
-  computed: {
-    ...mapState(['stickers']),
-
-    enabledStickers() {
-      return this.stickers.filter((s) => s.enable);
-    },
-  },
+  computed: mapGetters(['enabledStickers']),
 };
 </script>

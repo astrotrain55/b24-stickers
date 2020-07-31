@@ -30,8 +30,16 @@
                   justify="center"
                 >
                   <v-col class="px-0">
-                    <v-checkbox :input-value="sticker.enable"
-                                @change="toggle([$event, index])"/>
+                    <v-btn icon
+                           color="red"
+                           @click="remove(index)">
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-simple-checkbox
+                      :value="sticker.enable"
+                      color="indigo"
+                      @input="toggle([$event, index])"
+                    />
                   </v-col>
                 </v-row>
               </v-col>
@@ -48,6 +56,6 @@ import { mapState, mapMutations } from 'vuex';
 
 export default {
   computed: mapState(['stickers']),
-  methods: mapMutations(['toggle']),
+  methods: mapMutations(['toggle', 'remove']),
 };
 </script>

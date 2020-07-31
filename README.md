@@ -20,5 +20,5 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Official documentation
+See [Как добавить свои смайлики в Мессенджер](https://helpdesk.bitrix24.ru/open/5270441/).

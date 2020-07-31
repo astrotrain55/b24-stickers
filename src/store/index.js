@@ -22,17 +22,28 @@ export default new Vuex.Store({
   state: {
     stickers: initialState,
   },
+
+  getters: {
+    enabledStickers: (state) => state.stickers.filter((s) => s.enable),
+  },
+
   mutations: {
     toggle(state, [value, index]) {
-      state.stickers[index].enable = !!value;
+      state.stickers[index].enable = value;
+    },
+
+    remove(state, index) {
+      state.stickers.splice(index, 1);
     },
 
     add(state, sticker) {
       state.stickers.unshift(sticker);
     },
-  },
-  actions: {
-  },
-  modules: {
+
+    toggleAll(state, value) {
+      _.each(state.stickers, (sticker, key) => {
+        state.stickers[key].enable = value;
+      });
+    },
   },
 });
