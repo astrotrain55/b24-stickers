@@ -13,7 +13,7 @@
     "lodash": "^4.17.19",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
-    "vuetify": "^2.2.11",
+    "vuetify": "^2.3.7",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

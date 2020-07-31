@@ -6,22 +6,32 @@
       dark
     >
       <v-toolbar-title>b24-stickers</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer/>
+      <v-btn v-if="enabledStickers.length"
+             class="ma-2"
+             color="indigo"
+             tile
+             @click="dialogCode = true"
+      >
+        Копировать код
+      </v-btn>
       <v-btn class="ma-2"
              color="indigo"
              tile
-             @click="dialog = true"
+             @click="dialogAdd = true"
       >
         <v-icon>mdi-plus</v-icon>
         Добавить стикер
       </v-btn>
-      <v-btn class="ma-2"
-             color="indigo"
-             tile
-             @click="clipboard"
-      >
-        Копировать код
-      </v-btn>
+      <v-checkbox
+        label="Выделить всё"
+        :input-value="true"
+        :indeterminate="isChecked"
+        :style="{
+          marginTop: '25px',
+        }"
+        @change="toggleAll"
+      />
     </v-app-bar>
 
     <v-main>
@@ -33,87 +43,99 @@
           align="center"
           justify="center"
         >
-          <v-col class="text-center">
-            <AppCards/>
-            <AppCode ref="code"/>
+          <v-col>
+            <AppCards class="text-center"/>
           </v-col>
         </v-row>
       </v-container>
     </v-main>
-    <v-dialog v-model="dialog" persistent max-width="500px">
-      <v-card>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-form>
-                  <v-text-field
-                    v-model="newSticker.url"
-                    label="url"
-                    required
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="newSticker.size"
-                    :label="newSticker.sizeDefault"
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="newSticker.title"
-                    :label="newSticker.titleDefault"
-                  ></v-text-field>
-                </v-form>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Закрыть</v-btn>
-          <v-btn color="blue darken-1" text @click="addSticker">Добавить стикер</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <AppPopup
+      :open="dialogCode"
+      width=""
+      :successFunction="clipboard"
+      successText="Копировать код"
+      @popup:close="dialogCode = false"
+    >
+      <AppCode ref="code"/>
+    </AppPopup>
+    <AppPopup
+      :open="dialogAdd"
+      width="300px"
+      :successFunction="addSticker"
+      successText="Добавить стикер"
+      @popup:close="dialogAdd = false"
+    >
+      <v-form>
+        <v-text-field
+          v-model="newSticker.url"
+          label="Адрес"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="newSticker.size"
+          label="Размер"
+        ></v-text-field>
+        <v-text-field
+          v-model="newSticker.title"
+          label="Описание"
+        ></v-text-field>
+      </v-form>
+    </AppPopup>
   </v-app>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 import copy from 'copy-to-clipboard';
 import AppCards from './components/cards.vue';
 import AppCode from './components/code.vue';
+import AppPopup from './components/popup.vue';
 
 export default {
   components: {
     AppCards,
     AppCode,
+    AppPopup,
   },
 
   data: () => ({
-    dialog: false,
+    dialogAdd: false,
+    dialogCode: false,
     newSticker: {
       url: '',
       size: '',
-      sizeDefault: '100',
       title: '',
-      titleDefault: 'Noname Sticker',
     },
   }),
 
+  computed: {
+    ...mapState(['stickers']),
+    ...mapGetters(['enabledStickers']),
+
+    isChecked() {
+      const count = this.stickers.length;
+      const countEnabled = this.enabledStickers.length;
+      return countEnabled > 0 && countEnabled !== count;
+    },
+  },
+
   methods: {
-    ...mapMutations(['add']),
+    ...mapMutations(['add', 'toggleAll']),
 
     addSticker() {
       this.add({
         enable: true,
         icon: this.newSticker.url,
-        size: this.newSticker.size || this.newSticker.sizeDefault,
-        title: this.newSticker.title || this.newSticker.titleDefault,
+        size: this.newSticker.size || 100,
+        title: this.newSticker.title || 'Noname Sticker',
       });
 
-      this.dialog = false;
+      this.dialogAdd = false;
     },
 
     clipboard() {
       copy(this.$refs.code.$el.textContent);
+      this.dialogCode = false;
     },
   },
 };

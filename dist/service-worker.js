@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "dist/precache-manifest.71c8b0a20625f32a427c70223c46dfc4.js"
+  "dist/precache-manifest.1d75fbf87e869ae49e4fa18cdd1baeba.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "b24-stickers"});
